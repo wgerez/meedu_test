@@ -14,7 +14,7 @@ class Http {
     String path, {
     HttpMethod method = HttpMethod.get,
     Map<String, String> headers = const {},
-    Map<String, dynamic> queryParameters = const {},
+    Map<String, String> queryParameters = const {},
     dynamic body,
     Parser<T>? parser,
     Duration timeOut = const Duration(seconds: 7),
@@ -71,7 +71,7 @@ class Http {
 
       return HttpResult<T>(
         data: null,
-        statusCode: -1,
+        statusCode: statusCode ?? -1,
         error: HttpError(
           data: data,
           exception: e,
