@@ -4,13 +4,15 @@ import 'dart:io';
 import 'package:complete_example/app/data/helpers/http.dart';
 import 'package:complete_example/app/data/helpers/http_method.dart';
 import 'package:complete_example/app/domain/responses/login_response.dart';
+import 'package:tuple/tuple.dart';
 
 class AuthenticationAPI {
   final Http _http;
 
   AuthenticationAPI(this._http);
 
-  Future<LoginResponse> login(String email, String password) async {
+  Future<Tuple2<LoginResponse, String?>> login(
+      String email, String password) async {
     final result = await _http.request<String>(
       '/api/login',
       method: HttpMethod.post,
@@ -22,23 +24,19 @@ class AuthenticationAPI {
         return data['token'];
       },
     );
-    print("result data ${result.data}");
-    print("result data runtimeType ${result.data.runtimeType}");
-    print("result error ${result.error}");
-    print("result statusCode ${result.statusCode}");
     if (result.error != null) {
-      return LoginResponse.ok;
+      return Tuple2(LoginResponse.ok, result.data);
     }
 
     if (result.statusCode == 400) {
-      return LoginResponse.accessDenied;
+      return const Tuple2(LoginResponse.accessDenied, null);
     }
 
     final error = result.error!.exception;
     if (error is SocketException || error is TimeoutException) {
-      return LoginResponse.networkError;
+      return const Tuple2(LoginResponse.networkError, null);
     }
 
-    return LoginResponse.unknownError;
+    return const Tuple2(LoginResponse.unknownError, null);
   }
 }
