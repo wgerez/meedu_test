@@ -13,8 +13,8 @@ class SplashController extends SimpleNotifier {
 
   Future<void> _init() async {
     final AuthRespository authRespository = Get.find();
-    if (await authRespository.accessToken != null) {
-      _routeName = Routes.HOME;
+    if (await authRespository.accessToken == null) {
+      _routeName = Routes.LOGIN;
     }
     notify();
   }

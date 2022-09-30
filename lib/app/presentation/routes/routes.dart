@@ -2,5 +2,6 @@
 /// WARNING: generated code don't modify directly
 abstract class Routes {
   static const HOME = '/home';
+  static const LOGIN = '/login';
   static const SPLASH = '/splash';
 }
